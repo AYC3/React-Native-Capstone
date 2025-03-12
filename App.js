@@ -1,12 +1,67 @@
-import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
 import Onboarding from "./screens/Onboarding";
+import Profile from "./screens/Profile";
+import Splash from "./screens/Splash";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(null);
+  const [loading, setLoading] = useState(true);
+  console.log(isOnboardingComplete);
+
+  useEffect(() => {
+    const loadOnboardingState = async () => {
+      try {
+        const stateValue = await AsyncStorage.getItem("isOnboardingComplete");
+        if (stateValue !== null) {
+          setIsOnboardingComplete(JSON.parse(stateValue));
+        } else {
+          setIsOnboardingComplete(false);
+        }
+      } catch (error) {
+        console.error("failed to load async storage data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadOnboardingState();
+  }, []);
+
+  const completingOnboarding = async () => {
+    setIsOnboardingComplete(true);
+    try {
+      await AsyncStorage.setItem("isOnboardingComplete", JSON.stringify(true));
+    } catch (error) {
+      console.error("failed to save to async storage :(", error);
+    }
+  };
+
+  if (loading) {
+    return <Splash />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Onboarding />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isOnboardingComplete ? (
+          <Stack.Screen name="Profile" component={Profile} />
+        ) : (
+          <Stack.Screen name="Onboarding">
+            {(props) => (
+              <Onboarding
+                {...props}
+                completingOnboarding={completingOnboarding}
+              />
+            )}
+          </Stack.Screen>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

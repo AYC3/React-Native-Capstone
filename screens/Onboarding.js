@@ -1,12 +1,30 @@
 import { useState } from "react";
 import { View, Text, TextInput, Image, StyleSheet, Button } from "react-native";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Onboarding = () => {
+const Onboarding = ({ completingOnboarding }) => {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
 
   const isFirstNameValid = firstName.trim().length > 2;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  // const onboardingCompleted = () => {
+  //   if (isFirstNameValid && isEmailValid) {
+  //     setIsOnboardingComplete(true);
+  //   }
+  //   persistData();
+  // };
+
+  // const persistData = async () => {
+  //   try {
+  //     await AsyncStorage.setItem("isOnboardingComplete", JSON.stringify(true));
+  //     Alert.alert("State saved to AsyncStorage!");
+  //   } catch (error) {
+  //     console.error("error saving to AS", error);
+  //     Alert.alert("Failed to save to AsyncStorage!");
+  //   }
+  // };
 
   return (
     <View style={styles.onBoardingContainer}>
@@ -35,7 +53,11 @@ const Onboarding = () => {
           onChangeText={setEmail}
           value={email}
         />
-        <Button title="Next" disabled={!(isFirstNameValid && isEmailValid)} />
+        <Button
+          title="Next"
+          disabled={!(isFirstNameValid && isEmailValid)}
+          onPress={completingOnboarding}
+        />
       </View>
     </View>
   );
@@ -43,11 +65,11 @@ const Onboarding = () => {
 
 const styles = StyleSheet.create({
   onBoardingContainer: {
+    paddingTop: 30,
     width: "70%",
     marginLeft: "auto",
     marginRight: "auto",
     textAlign: "center",
-    // alignItems: "center"
     gap: 30,
   },
 
@@ -62,7 +84,6 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    flex: 1,
     textAlign: "center",
     gap: 20,
   },
