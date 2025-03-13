@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(isOnboardingComplete);
+  // console.log(isOnboardingComplete);
 
   useEffect(() => {
     const loadOnboardingState = async () => {

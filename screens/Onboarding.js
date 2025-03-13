@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, Text, TextInput, Image, StyleSheet, Button } from "react-native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Onboarding = ({ completingOnboarding }) => {
   const [firstName, setFirstName] = useState("");
@@ -9,22 +9,14 @@ const Onboarding = ({ completingOnboarding }) => {
   const isFirstNameValid = firstName.trim().length > 2;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // const onboardingCompleted = () => {
-  //   if (isFirstNameValid && isEmailValid) {
-  //     setIsOnboardingComplete(true);
-  //   }
-  //   persistData();
-  // };
-
-  // const persistData = async () => {
-  //   try {
-  //     await AsyncStorage.setItem("isOnboardingComplete", JSON.stringify(true));
-  //     Alert.alert("State saved to AsyncStorage!");
-  //   } catch (error) {
-  //     console.error("error saving to AS", error);
-  //     Alert.alert("Failed to save to AsyncStorage!");
-  //   }
-  // };
+  const profileInfo = async () => {
+    try {
+      await AsyncStorage.setItem("firstName", firstName);
+      await AsyncStorage.setItem("email", email);
+    } catch (error) {
+      console.error("no info saved in async storage", error);
+    }
+  };
 
   return (
     <View style={styles.onBoardingContainer}>
@@ -56,7 +48,10 @@ const Onboarding = ({ completingOnboarding }) => {
         <Button
           title="Next"
           disabled={!(isFirstNameValid && isEmailValid)}
-          onPress={completingOnboarding}
+          onPress={() => {
+            completingOnboarding();
+            profileInfo();
+          }}
         />
       </View>
     </View>
