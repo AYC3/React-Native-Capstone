@@ -45,11 +45,23 @@ export default function App() {
     return <Splash />;
   }
 
+  const applogout = async () => {
+    try {
+      // Clear AsyncStorage when the user logs out
+      await AsyncStorage.clear();
+      setIsOnboardingComplete(false); // Reset onboarding status
+    } catch (error) {
+      console.error("Error clearing AsyncStorage", error);
+    }
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {isOnboardingComplete ? (
-          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Profile">
+            {(props) => <Profile {...props} applogout={applogout} />}
+          </Stack.Screen>
         ) : (
           <Stack.Screen name="Onboarding">
             {(props) => (

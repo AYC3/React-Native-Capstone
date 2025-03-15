@@ -1,14 +1,20 @@
-import { View, Text, TextInput, Button, Image } from "react-native";
+import { View, Text, TextInput, Button, Image, CheckBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
+import {
+  createStaticNavigation,
+  useNavigation,
+} from "@react-navigation/native";
 
-const Profile = () => {
+const Profile = ({ applogout }) => {
   const [userFirstName, setUserFirstName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -46,8 +52,56 @@ const Profile = () => {
     }
   };
 
+  const saveProfileData = async () => {
+    try {
+      await AsyncStorage.setItem("userFirstName", userFirstName);
+      await AsyncStorage.setItem("userEmail", userEmail);
+      await AsyncStorage.setItem("lastName", lastName);
+      await AsyncStorage.setItem("phone", phone);
+      await AsyncStorage.setItem("image", image);
+      alert("Data saved to asyncStorage");
+    } catch (error) {
+      console.error("error sacing profile to asyncStorage", error);
+    }
+  };
+
+  const loadProfileData = async () => {
+    try {
+      const savedUserFirstname = await AsyncStorage.getItem("userFirstName");
+      const savedUserEmail = await AsyncStorage.getItem("userEmail");
+      const savedLastName = await AsyncStorage.getItem("lastName");
+      const savedPhone = await AsyncStorage.getItem("phone");
+      const savedImage = await AsyncStorage.getItem("image");
+      if (userFirstName !== "") setUserFirstName(savedUserFirstname);
+      if (userEmail !== "") setUserEmail(savedUserEmail);
+      if (lastName !== "") setLastName(savedLastName);
+      if (phone !== "") setPhone(savedPhone);
+      if (image !== "") setImage(savedImage);
+    } catch (error) {
+      console.error("Error loading data from AsyncStorage:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadProfileData();
+  }, []);
+
+  // const logout = async () => {
+  //   try {
+  //     await AsyncStorage.clear();
+  //     setUserFirstName("");
+  //     setUserEmail("");
+  //     setLastName("");
+  //     setPhone("");
+  //     setImage("");
+  //   } catch (error) {
+  //     console.error("error clearing data to the disk", error);
+  //   }
+  // };
+
   return (
     <View>
+      <Text>Personal information</Text>
       <Text>Avatar</Text>
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
@@ -56,6 +110,8 @@ const Profile = () => {
         {userFirstName[0]}
         {lastName[0]}
       </Text>
+      <Button title="Change image" onPress={pickimage} />
+      <Button title="Remove image" />
 
       <Text>First name:</Text>
       <TextInput value={userFirstName} />
@@ -73,7 +129,14 @@ const Profile = () => {
         maxLength={10}
         value={phone}
       />
-      <Button title="Pick an image" onPress={pickimage} />
+      <Button
+        title="Log out"
+        onPress={applogout}
+        // onPress={() => navigation.navigate("Onboarding")}
+      />
+      <Button title="Discard changes" />
+      <Button title="Save changes" onPress={saveProfileData} />
+      <CheckBox />
     </View>
   );
 };
