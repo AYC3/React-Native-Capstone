@@ -1,11 +1,9 @@
-import { View, Text, TextInput, Button, Image, CheckBox } from "react-native";
+import { View, Text, TextInput, Button, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import {
-  createStaticNavigation,
-  useNavigation,
-} from "@react-navigation/native";
+
+import Checkbox from "expo-checkbox";
 
 const Profile = ({ applogout }) => {
   const [userFirstName, setUserFirstName] = useState("");
@@ -14,7 +12,12 @@ const Profile = ({ applogout }) => {
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState("");
 
-  const navigation = useNavigation();
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
+  const [isChecked3, setIsChecked3] = useState(false);
+  const [isChecked4, setIsChecked4] = useState(false);
+
+  console.log(isChecked1, isChecked2, isChecked3, isChecked4);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -59,6 +62,15 @@ const Profile = ({ applogout }) => {
       await AsyncStorage.setItem("lastName", lastName);
       await AsyncStorage.setItem("phone", phone);
       await AsyncStorage.setItem("image", image);
+      (await AsyncStorage.setItem("isChecked1", JSON.stringify(isChecked1))) ||
+        false;
+      (await AsyncStorage.setItem("isChecked2", JSON.stringify(isChecked2))) ||
+        false;
+      (await AsyncStorage.setItem("isChecked3", JSON.stringify(isChecked3))) ||
+        false;
+      (await AsyncStorage.setItem("isChecked4", JSON.stringify(isChecked4))) ||
+        false;
+
       alert("Data saved to asyncStorage");
     } catch (error) {
       console.error("error sacing profile to asyncStorage", error);
@@ -72,11 +84,28 @@ const Profile = ({ applogout }) => {
       const savedLastName = await AsyncStorage.getItem("lastName");
       const savedPhone = await AsyncStorage.getItem("phone");
       const savedImage = await AsyncStorage.getItem("image");
+      const savedCheckbox1 = JSON.parse(
+        await AsyncStorage.getItem("isChecked1")
+      );
+      const savedCheckbox2 = JSON.parse(
+        await AsyncStorage.getItem("isChecked2")
+      );
+      const savedCheckbox3 = JSON.parse(
+        await AsyncStorage.getItem("isChecked3")
+      );
+      const savedCheckbox4 = JSON.parse(
+        await AsyncStorage.getItem("isChecked4")
+      );
+
       if (userFirstName !== "") setUserFirstName(savedUserFirstname);
       if (userEmail !== "") setUserEmail(savedUserEmail);
       if (lastName !== "") setLastName(savedLastName);
       if (phone !== "") setPhone(savedPhone);
       if (image !== "") setImage(savedImage);
+      if (isChecked1 !== "") setIsChecked1(savedCheckbox1);
+      if (isChecked2 !== "") setIsChecked2(savedCheckbox2);
+      if (isChecked3 !== "") setIsChecked3(savedCheckbox3);
+      if (isChecked4 !== "") setIsChecked4(savedCheckbox4);
     } catch (error) {
       console.error("Error loading data from AsyncStorage:", error);
     }
@@ -85,19 +114,6 @@ const Profile = ({ applogout }) => {
   useEffect(() => {
     loadProfileData();
   }, []);
-
-  // const logout = async () => {
-  //   try {
-  //     await AsyncStorage.clear();
-  //     setUserFirstName("");
-  //     setUserEmail("");
-  //     setLastName("");
-  //     setPhone("");
-  //     setImage("");
-  //   } catch (error) {
-  //     console.error("error clearing data to the disk", error);
-  //   }
-  // };
 
   return (
     <View>
@@ -129,14 +145,26 @@ const Profile = ({ applogout }) => {
         maxLength={10}
         value={phone}
       />
-      <Button
-        title="Log out"
-        onPress={applogout}
-        // onPress={() => navigation.navigate("Onboarding")}
-      />
+      <Button title="Log out" onPress={applogout} />
       <Button title="Discard changes" />
       <Button title="Save changes" onPress={saveProfileData} />
-      <CheckBox />
+      <Text>EMAIL NOTIFICATIONS</Text>
+      <View>
+        <Checkbox value={isChecked1} onValueChange={setIsChecked1} />
+        <Text>Order status</Text>
+      </View>
+      <View>
+        <Checkbox value={isChecked2} onValueChange={setIsChecked2} />
+        <Text>Password changes</Text>
+      </View>
+      <View>
+        <Checkbox value={isChecked3} onValueChange={setIsChecked3} />
+        <Text>Pecial offers</Text>
+      </View>
+      <View>
+        <Checkbox value={isChecked4} onValueChange={setIsChecked4} />
+        <Text>Newsletters</Text>
+      </View>
     </View>
   );
 };
