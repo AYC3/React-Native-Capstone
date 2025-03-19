@@ -3,28 +3,7 @@ import { View, Text } from "react-native";
 const Splash = () => {
   return (
     <View>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
-      <Text>Splash...</Text>
+      <Text>LOADING...</Text>
     </View>
   );
 };

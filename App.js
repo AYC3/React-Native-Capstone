@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Onboarding from "./screens/Onboarding";
 import Profile from "./screens/Profile";
 import Splash from "./screens/Splash";
+import Home from "./screens/Home";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -12,7 +13,6 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(null);
   const [loading, setLoading] = useState(true);
-  // console.log(isOnboardingComplete);
 
   useEffect(() => {
     const loadOnboardingState = async () => {
@@ -59,9 +59,12 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {isOnboardingComplete ? (
-          <Stack.Screen name="Profile">
-            {(props) => <Profile {...props} applogout={applogout} />}
-          </Stack.Screen>
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile">
+              {(props) => <Profile {...props} applogout={applogout} />}
+            </Stack.Screen>
+          </>
         ) : (
           <Stack.Screen name="Onboarding">
             {(props) => (

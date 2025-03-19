@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, Image, StyleSheet, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Header from "../components/Header";
 
 const Onboarding = ({ completingOnboarding }) => {
   const [firstName, setFirstName] = useState("");
@@ -20,13 +21,14 @@ const Onboarding = ({ completingOnboarding }) => {
 
   return (
     <View style={styles.onBoardingContainer}>
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <Text>LITTLE LEMON</Text>
         <Image
           style={styles.logo}
           source={require("../assets/LittleLemonGreen.png")}
         />
-      </View>
+      </View> */}
+      <Header title="Header" />
       <Text>Let us get to know you!</Text>
       <View style={styles.inputContainer}>
         <Text>First Name:</Text>
@@ -68,15 +70,15 @@ const styles = StyleSheet.create({
     gap: 30,
   },
 
-  headerContainer: {
-    flexDirection: "row",
-  },
+  // headerContainer: {
+  //   flexDirection: "row",
+  // },
 
-  logo: {
-    height: 50,
-    width: 50,
-    resizeMode: "contain",
-  },
+  // logo: {
+  //   height: 50,
+  //   width: 50,
+  //   resizeMode: "contain",
+  // },
 
   inputContainer: {
     textAlign: "center",
