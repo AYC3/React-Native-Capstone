@@ -1,7 +1,15 @@
-import { View, Text, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import * as SQLite from "expo-sqlite";
+// import { ScrollView } from "react-native-gesture-handler";
 
 const db = SQLite.openDatabaseSync("little-lemon");
 
@@ -13,13 +21,15 @@ db.execSync(
     name TEXT,
     description TEXT,
     price REAL,
-    image TEXT
+    image TEXT,
+    category TEXT
     );`
 );
 
 const Home = () => {
   const [menuItems, setMenuItems] = useState(null);
-  console.log("menu items loging", menuItems);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   function checkDB() {
     const results = db.getAllSync("SELECT * FROM menu;");
@@ -35,13 +45,15 @@ const Home = () => {
 
       data.menu.forEach((item) => {
         db.runSync(
-          "INSERT INTO menu (name, description, price, image) VALUES (?,?,?,?);",
-          [item.name, item.description, item.price, item.image]
+          "INSERT INTO menu (name, description, price, image, category) VALUES (?,?,?,?,?);",
+          [item.name, item.description, item.price, item.image, item.category]
         );
       });
 
       loadMenuFromDB();
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function loadMenuFromDB() {
@@ -50,83 +62,149 @@ const Home = () => {
   }
 
   useEffect(() => {
+    const uniqueCategories = [];
+    if (menuItems) {
+      menuItems.forEach((item) => {
+        if (!uniqueCategories.includes(item.category)) {
+          uniqueCategories.push(item.category);
+          // setCategories(uniqueCategories);
+        }
+      });
+      setCategories(uniqueCategories);
+    }
+  }, [menuItems]);
+
+  function toggleCategory(category) {
+    setSelectedCategories((prevSelected) =>
+      prevSelected.includes(category)
+        ? prevSelected.filter((cat) => cat !== category)
+        : [...prevSelected, category]
+    );
+  }
+
+  // filtering the menu:
+
+  const filteredMenu =
+    menuItems && selectedCategories.length > 0
+      ? menuItems.filter((item) => {
+          return selectedCategories.includes(item.category);
+        })
+      : menuItems || [];
+
+  useEffect(() => {
     const existingData = checkDB();
 
     if (existingData) {
       setMenuItems(existingData);
+      setCategories([...new Set(existingData.map((item) => item.category))]);
     } else {
       fetchMenuData();
     }
   }, []);
 
+  // DELETE DATABASE: //
+
   // useEffect(() => {
   //   function clearDatabase() {
   //     db.execSync("DELETE FROM menu;"); // Delete all rows
   //     setMenuItems([]); // Clear state
-  //     console.log("🗑️ Database cleared!");
+  //     console.log("database cleared");
   //   }
   //   clearDatabase();
   // }, []);
 
   // useEffect(() => {
-  //   const fetchMenuItems = async () => {
-  //     const response = await fetch(
-  //       "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json"
-  //     );
-  //     const data = await response.json();
-  //     // console.log(data);
-  //     setMenuItems(data);
-  //   };
-  //   fetchMenuItems();
+  //   db.execSync("DROP TABLE IF EXISTS menu;");
   // }, []);
+
+  //   return (
+  //     <View>
+  //       <Header title="Header" />
+  //       <View>
+  //         <Text>Little Lemon</Text>
+  //         <Text>Chicago</Text>
+  //         <Text>
+  //           We are a family owned mediterranean restaurant focused on traditional
+  //           recipes serced with a modern twist
+  //         </Text>
+  //         <Image />
+  //       </View>
+  //       <Text>ORDER FOR DELIVERY!</Text>
+
+  //       <FlatList
+  //         data={menuItems}
+  //         keyExtractor={(item) => item.id.toString()}
+  //         renderItem={({ item }) => (
+  //           <View>
+  //             <Text>{item.name}</Text>
+  //             <Text>{item.description}</Text>
+  //             <Text>{item.price}</Text>
+  //             <Image
+  //               source={{
+  //                 uri: `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${item.image}?raw=true`,
+  //               }}
+  //               style={{ width: 200, height: 200 }}
+  //             />
+  //           </View>
+  //         )}
+  //       />
+  //     </View>
+
+  //   );
+  // };
 
   return (
     <View>
-      <Header title="Header" />
-      <View>
-        <Text>Little Lemon</Text>
-        <Text>Chicago</Text>
-        <Text>
-          We are a family owned mediterranean restaurant focused on traditional
-          recipes serced with a modern twist
-        </Text>
-        <Image />
-      </View>
-      <Text>ORDER FOR DELIVERY!</Text>
-
-      {/* {menuItems?.menu && (
-        <FlatList
-          data={menuItems.menu}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item.name}</Text>
-              <Text>{item.description}</Text>
-              <Text>{item.price}</Text>
-              <Image
-                source={{
-                  uri: `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${item.image}?raw=true`,
+      {/* CATEGORY SELECTOR */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{ marginBottom: 10 }}
+      >
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <TouchableOpacity
+              key={category}
+              onPress={() => toggleCategory(category)}
+              style={{
+                backgroundColor: selectedCategories.includes(category)
+                  ? "#FF6347"
+                  : "#ddd",
+                padding: 10,
+                marginRight: 10,
+                borderRadius: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: selectedCategories.includes(category)
+                    ? "white"
+                    : "black",
                 }}
-                style={{ width: 200, height: 200 }}
-              />
-            </View>
-          )}
-        />
-      )} */}
+              >
+                {category}
+              </Text>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <Text>Loading categories...</Text>
+        )}
+      </ScrollView>
 
+      {/* MENU LIST */}
       <FlatList
-        data={menuItems}
-        keyExtractor={(item) => item.id.toString()}
+        data={filteredMenu.length > 0 ? filteredMenu : []}
+        keyExtractor={(item, index) => item.id?.toString() || index.toString()}
         renderItem={({ item }) => (
           <View>
             <Text>{item.name}</Text>
             <Text>{item.description}</Text>
-            <Text>{item.price}</Text>
+            <Text>${item.price}</Text>
             <Image
               source={{
                 uri: `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${item.image}?raw=true`,
               }}
-              style={{ width: 200, height: 200 }}
+              style={{ width: 200, height: 200, marginTop: 10 }}
             />
           </View>
         )}
@@ -134,5 +212,4 @@ const Home = () => {
     </View>
   );
 };
-
 export default Home;
