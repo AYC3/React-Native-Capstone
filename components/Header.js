@@ -1,6 +1,6 @@
 import { View, Text, Image } from "react-native";
 import { StyleSheet } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
 const Header = ({ image }) => {

@@ -5,11 +5,11 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import * as SQLite from "expo-sqlite";
-// import { ScrollView } from "react-native-gesture-handler";
 
 const db = SQLite.openDatabaseSync("little-lemon");
 
@@ -117,44 +117,25 @@ const Home = () => {
   //   db.execSync("DROP TABLE IF EXISTS menu;");
   // }, []);
 
-  //   return (
-  //     <View>
-  //       <Header title="Header" />
-  //       <View>
-  //         <Text>Little Lemon</Text>
-  //         <Text>Chicago</Text>
-  //         <Text>
-  //           We are a family owned mediterranean restaurant focused on traditional
-  //           recipes serced with a modern twist
-  //         </Text>
-  //         <Image />
-  //       </View>
-  //       <Text>ORDER FOR DELIVERY!</Text>
-
-  //       <FlatList
-  //         data={menuItems}
-  //         keyExtractor={(item) => item.id.toString()}
-  //         renderItem={({ item }) => (
-  //           <View>
-  //             <Text>{item.name}</Text>
-  //             <Text>{item.description}</Text>
-  //             <Text>{item.price}</Text>
-  //             <Image
-  //               source={{
-  //                 uri: `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${item.image}?raw=true`,
-  //               }}
-  //               style={{ width: 200, height: 200 }}
-  //             />
-  //           </View>
-  //         )}
-  //       />
-  //     </View>
-
-  //   );
-  // };
+  const Banner = () => {
+    return (
+      <View>
+        <Text>LITTLE LEMON</Text>
+        <Text>Chicago </Text>
+        <Text>
+          We are a family owned Mediterranean restaurant,focused on traditional
+          recipies served with a modern twist
+        </Text>
+        <Image />
+        <TextInput style={{ backgroundColor: "white", borderRadius: 100 }} />
+      </View>
+    );
+  };
 
   return (
     <View>
+      <Header />
+      <Banner />
       {/* CATEGORY SELECTOR */}
       <ScrollView
         horizontal
