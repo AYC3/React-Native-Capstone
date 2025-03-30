@@ -7,12 +7,27 @@ import Splash from "./screens/Splash";
 import Home from "./screens/Home";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Header from "./components/Header";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageLoadedAS, setImageLoadedAS] = useState(null);
+
+  useEffect(() => {
+    const loadUserImage = async () => {
+      try {
+        const storedUserImage = await AsyncStorage.getItem("image");
+        if (setImageLoadedAS) {
+          setImageLoadedAS(storedUserImage);
+        }
+        // console.log("logeando imagen de async prueba", storedUserImage);
+      } catch (error) {}
+    };
+    loadUserImage();
+  });
 
   useEffect(() => {
     const loadOnboardingState = async () => {
@@ -57,7 +72,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          header: (props) => (
+            <Header {...props} title="HHH" imageLoadedAS={imageLoadedAS} />
+          ),
+        }}
+      >
         {isOnboardingComplete ? (
           <>
             <Stack.Screen name="Home" component={Home} />

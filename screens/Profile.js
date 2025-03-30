@@ -18,8 +18,6 @@ const Profile = ({ applogout }) => {
   const [isChecked3, setIsChecked3] = useState(false);
   const [isChecked4, setIsChecked4] = useState(false);
 
-  console.log(image);
-
   useEffect(() => {
     const loadUserData = async () => {
       try {
@@ -123,16 +121,17 @@ const Profile = ({ applogout }) => {
 
   return (
     <View>
-      <Header title="Header" image={image} />
       <Text>Personal information</Text>
       <Text>Avatar</Text>
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      {image ? (
+        <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />
+      ) : (
+        <Text>
+          {userFirstName[0]}
+          {lastName[0]}
+        </Text>
       )}
-      <Text>
-        {userFirstName[0]}
-        {lastName[0]}
-      </Text>
+
       <Button title="Change image" onPress={pickimage} />
       <Button title="Remove image" />
 

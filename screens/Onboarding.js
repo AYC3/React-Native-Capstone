@@ -28,7 +28,7 @@ const Onboarding = ({ completingOnboarding }) => {
           source={require("../assets/LittleLemonGreen.png")}
         />
       </View> */}
-      <Header title="Header" />
+      {/* <Header title="Header" /> */}
       <Text>Let us get to know you!</Text>
       <View style={styles.inputContainer}>
         <Text>First Name:</Text>
