@@ -1,4 +1,12 @@
-import { View, Text, TextInput, Button, Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  Image,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -48,7 +56,6 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      // setIsImageLoaded(true);
     }
   };
   useEffect(() => {});
@@ -118,22 +125,36 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
   }, []);
 
   return (
-    <View>
-      <Text>Personal information</Text>
-      <Text>Avatar</Text>
-      {image ? (
-        <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />
-      ) : (
-        <Text
-          style={{ color: "white", backgroundColor: "black", fontSize: 40 }}
-        >
-          {userFirstName[0]}
-          {lastName[0]}
-        </Text>
-      )}
+    <View style={{ paddingLeft: 20, paddingRight: 20 }}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}>
+        Personal information
+      </Text>
 
-      <Button title="Change image" onPress={pickimage} />
-      <Button title="Remove image" />
+      <Text>Avatar</Text>
+
+      <View style={styles.avatarContainer}>
+        {image ? (
+          <Image
+            source={{ uri: image }}
+            style={{ width: 100, height: 100, borderRadius: 50 }}
+          />
+        ) : (
+          <Text
+            style={{ color: "white", backgroundColor: "black", fontSize: 40 }}
+          >
+            {userFirstName[0]}
+            {lastName[0]}
+          </Text>
+        )}
+        <Pressable style={styles.button1} onPress={pickimage}>
+          <Text style={{ color: "white", fontWeight: "bold" }}>Change</Text>
+        </Pressable>
+        <Pressable style={styles.button2}>
+          <Text style={{ color: "#495e57" }}>Remove image</Text>
+        </Pressable>
+        {/* <Button title="Change image" onPress={pickimage} />
+        <Button title="Remove image" /> */}
+      </View>
 
       <Text>First name:</Text>
       <TextInput value={userFirstName} />
@@ -151,9 +172,7 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
         maxLength={10}
         value={phone}
       />
-      <Button title="Log out" onPress={applogout} />
-      <Button title="Discard changes" />
-      <Button title="Save changes" onPress={saveProfileData} />
+
       <Text>EMAIL NOTIFICATIONS</Text>
       <View>
         <Checkbox value={isChecked1} onValueChange={setIsChecked1} />
@@ -171,8 +190,62 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
         <Checkbox value={isChecked4} onValueChange={setIsChecked4} />
         <Text>Newsletters</Text>
       </View>
+      <Pressable style={styles.button3} onPress={applogout}>
+        <Text style={{ fontWeight: "bold" }}>Log out</Text>
+      </Pressable>
+      {/* <Button title="Log out" onPress={applogout} /> */}
+      <View style={styles.btnContainer}>
+        <Pressable style={styles.button2}>
+          <Text style={{ color: "#495e57" }}>Discard changes</Text>
+        </Pressable>
+        <Pressable style={styles.button1} onPress={saveProfileData}>
+          <Text style={{ color: "white" }}>Save changes</Text>
+        </Pressable>
+        {/* <Button title="Discard changes" style={styles.button} />
+        <Button title="Save changes" onPress={saveProfileData} /> */}
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  avatarContainer: {
+    flexDirection: "row",
+    gap: 15,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+
+  button1: {
+    padding: 12,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#495e57",
+    maxHeight: 50,
+  },
+  button2: {
+    padding: 12,
+    borderRadius: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#495e57",
+    maxHeight: 45,
+  },
+  button3: {
+    padding: 12,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F4CE14",
+    maxHeight: 50,
+  },
+});
 
 export default Profile;

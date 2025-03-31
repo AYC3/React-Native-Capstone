@@ -21,38 +21,38 @@ const Header = ({ imageLoadedAS }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text>Go Back</Text>
         </TouchableOpacity>
-        <Text>LITTLE LEMON</Text>
+        {/* <Text>LITTLE LEMON</Text> */}
 
-        <Image
-          style={styles.logo}
-          source={require("../assets/LittleLemonGreen.png")}
-        />
-      </View>
+        <Image style={styles.logo} source={require("../assets/Logo.png")} />
+        <View>
+          {imageToJson ? (
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <Image
+                source={{ uri: imageToJson }}
+                style={{ width: 60, height: 60, borderRadius: 100 }}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <Text
+                style={{
+                  color: "white",
+                  backgroundColor: "black",
+                  fontSize: 40,
+                }}
+              >
+                Empty
+              </Text>
+            </TouchableOpacity>
+          )}
 
-      <View>
-        {imageToJson ? (
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Image
-              source={{ uri: imageToJson }}
-              style={{ width: 60, height: 60, borderRadius: 100 }}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Text
-              style={{ color: "white", backgroundColor: "black", fontSize: 40 }}
-            >
-              Profile
-            </Text>
-          </TouchableOpacity>
-        )}
-
-        {/* <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Image
             source={{ uri: imageToJson }}
             style={{ width: 60, height: 60, borderRadius: 100 }}
           />
         </TouchableOpacity> */}
+        </View>
       </View>
     </View>
   );
@@ -61,12 +61,18 @@ const Header = ({ imageLoadedAS }) => {
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
-    paddingTop: 60,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: "20",
+    paddingRight: "20",
+    marginTop: 50,
+    marginBottom: 20,
   },
 
   logo: {
-    height: 50,
-    width: 50,
+    // height: 130,
+    // marginTop: 100,
+    width: 200,
     resizeMode: "contain",
   },
 });
