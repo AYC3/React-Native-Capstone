@@ -2,11 +2,9 @@ import { View, Text, TextInput, Button, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import Header from "../components/Header";
-
 import Checkbox from "expo-checkbox";
 
-const Profile = ({ applogout }) => {
+const Profile = ({ applogout, setIsImageLoaded }) => {
   const [userFirstName, setUserFirstName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [lastName, setLastName] = useState("");
@@ -47,13 +45,13 @@ const Profile = ({ applogout }) => {
       aspect: [4, 3],
       quality: 1,
     });
-    // console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      // setIsImageLoaded(true);
     }
   };
-
+  useEffect(() => {});
   const saveProfileData = async () => {
     try {
       await AsyncStorage.setItem("userFirstName", userFirstName);
@@ -75,6 +73,7 @@ const Profile = ({ applogout }) => {
     } catch (error) {
       console.error("error sacing profile to asyncStorage", error);
     }
+    setIsImageLoaded("just re rendering");
   };
 
   const loadProfileData = async () => {
@@ -84,7 +83,6 @@ const Profile = ({ applogout }) => {
       const savedLastName = await AsyncStorage.getItem("lastName");
       const savedPhone = await AsyncStorage.getItem("phone");
       const savedImage = await AsyncStorage.getItem("image");
-      // console.log("profile image async", savedImage);
 
       const savedCheckbox1 = JSON.parse(
         await AsyncStorage.getItem("isChecked1")
@@ -126,7 +124,9 @@ const Profile = ({ applogout }) => {
       {image ? (
         <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />
       ) : (
-        <Text>
+        <Text
+          style={{ color: "white", backgroundColor: "black", fontSize: 40 }}
+        >
           {userFirstName[0]}
           {lastName[0]}
         </Text>

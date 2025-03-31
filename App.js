@@ -15,19 +15,19 @@ export default function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imageLoadedAS, setImageLoadedAS] = useState(null);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     const loadUserImage = async () => {
       try {
         const storedUserImage = await AsyncStorage.getItem("image");
-        if (setImageLoadedAS) {
+        if (storedUserImage) {
           setImageLoadedAS(storedUserImage);
         }
-        // console.log("logeando imagen de async prueba", storedUserImage);
       } catch (error) {}
     };
     loadUserImage();
-  });
+  }, [isImageLoaded, isOnboardingComplete]);
 
   useEffect(() => {
     const loadOnboardingState = async () => {
@@ -62,9 +62,9 @@ export default function App() {
 
   const applogout = async () => {
     try {
-      // Clear AsyncStorage when the user logs out
       await AsyncStorage.clear();
       setIsOnboardingComplete(false); // Reset onboarding status
+      setImageLoadedAS(null);
     } catch (error) {
       console.error("Error clearing AsyncStorage", error);
     }
@@ -75,7 +75,7 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{
           header: (props) => (
-            <Header {...props} title="HHH" imageLoadedAS={imageLoadedAS} />
+            <Header {...props} title="Header" imageLoadedAS={imageLoadedAS} />
           ),
         }}
       >
@@ -83,7 +83,13 @@ export default function App() {
           <>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Profile">
-              {(props) => <Profile {...props} applogout={applogout} />}
+              {(props) => (
+                <Profile
+                  {...props}
+                  applogout={applogout}
+                  setIsImageLoaded={setIsImageLoaded}
+                />
+              )}
             </Stack.Screen>
           </>
         ) : (

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const Header = ({ imageLoadedAS }) => {
+const HeaderNoGoBack = ({ imageLoadedAS }) => {
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default HeaderNoGoBack;
