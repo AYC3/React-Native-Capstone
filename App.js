@@ -74,7 +74,7 @@ export default function App() {
   };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer style={styles.container}>
       <Stack.Navigator
         screenOptions={{
           header: (props) => (

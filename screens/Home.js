@@ -109,8 +109,8 @@ const Home = () => {
         ) || [];
 
   return (
-    // <View style={{ padding: 20, flex: 1 }}>
-    <View>
+    <View style={{ flex: 1 }}>
+      {/* <View> */}
       <View style={styles.heroContainer}>
         <Text style={{ color: "#F4CE14", fontSize: 35 }}>Little Lemon</Text>
         <Text style={{ color: "white", fontSize: 25, marginBottom: 15 }}>
@@ -156,7 +156,7 @@ const Home = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{ marginBottom: 10, marginTop: 20 }}
+          style={{ marginTop: 10 }}
         >
           {categories.length > 0 ? (
             categories.map((category) => (
@@ -189,19 +189,33 @@ const Home = () => {
         </ScrollView>
       </View>
       <FlatList
+        nestedScrollEnabled={true}
+        contentContainerStyle={{ paddingBottom: 500 }}
         style={{ padding: 20 }}
         data={filteredMenu.length > 0 ? filteredMenu : []}
         keyExtractor={(item, index) => item.id?.toString() || index.toString()}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.name}</Text>
-            <Text>{item.description}</Text>
-            <Text>${item.price}</Text>
+          <View style={{ marginBottom: 10, gap: 20 }}>
+            <View>
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                {item.name}
+              </Text>
+              <Text style={{ paddingBottom: 8, maxWidth: 250 }}>
+                {item.description}
+              </Text>
+              <Text style={{ fontSize: 16 }}>${item.price}</Text>
+            </View>
+
             <Image
               source={{
                 uri: `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${item.image}?raw=true`,
               }}
-              style={{ width: 200, height: 200, marginTop: 10 }}
+              style={{
+                width: 100,
+                height: 100,
+                marginTop: 10,
+                // alignSelf: "flex-end",
+              }}
             />
           </View>
         )}
