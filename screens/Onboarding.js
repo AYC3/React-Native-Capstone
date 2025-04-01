@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { View, Text, TextInput, Image, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  StyleSheet,
+  Button,
+  Pressable,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Header from "../components/Header";
 
 const Onboarding = ({ completingOnboarding }) => {
   const [firstName, setFirstName] = useState("");
@@ -47,7 +54,16 @@ const Onboarding = ({ completingOnboarding }) => {
           onChangeText={setEmail}
           value={email}
         />
+
+        {/* <Pressable >
+          <Text disabled={!(isFirstNameValid && isEmailValid)}
+          onPress={() => {
+            completingOnboarding();
+            profileInfo();
+          }}>NEXT</Text>
+        </Pressable> */}
         <Button
+          color={"#495e57"}
           title="Next"
           disabled={!(isFirstNameValid && isEmailValid)}
           onPress={() => {
@@ -69,16 +85,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     gap: 30,
   },
-
-  // headerContainer: {
-  //   flexDirection: "row",
-  // },
-
-  // logo: {
-  //   height: 50,
-  //   width: 50,
-  //   resizeMode: "contain",
-  // },
 
   inputContainer: {
     textAlign: "center",

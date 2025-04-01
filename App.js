@@ -17,12 +17,15 @@ export default function App() {
   const [imageLoadedAS, setImageLoadedAS] = useState(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
+  console.log("is image loaded re render", isImageLoaded);
+
   useEffect(() => {
     const loadUserImage = async () => {
       try {
         const storedUserImage = await AsyncStorage.getItem("image");
         if (storedUserImage) {
           setImageLoadedAS(storedUserImage);
+          setIsImageLoaded(false);
         }
       } catch (error) {}
     };

@@ -140,7 +140,14 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
           />
         ) : (
           <Text
-            style={{ color: "white", backgroundColor: "black", fontSize: 40 }}
+            style={{
+              color: "#495e57",
+              backgroundColor: "white",
+              fontSize: 50,
+              borderRadius: 50,
+              width: 100,
+              height: 100,
+            }}
           >
             {userFirstName[0]}
             {lastName[0]}
@@ -156,42 +163,50 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
         <Button title="Remove image" /> */}
       </View>
 
-      <Text>First name:</Text>
-      <TextInput value={userFirstName} />
-      <Text>Laste name:</Text>
-      <TextInput placeholder="Last name" onChangeText={setLastName} />
+      <Text>First name</Text>
+      <TextInput value={userFirstName} style={styles.input} />
+      <Text>Laste name</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Last name"
+        onChangeText={setLastName}
+        value={lastName}
+      />
 
-      <Text>Email:</Text>
-      <TextInput value={userEmail} />
+      <Text>Email</Text>
+      <TextInput value={userEmail} style={styles.input} />
 
-      <Text>Phone number:</Text>
+      <Text>Phone number</Text>
       <TextInput
         placeholder="Enter your phone number"
         onChangeText={handlePhone}
         keyboardType="number-pad"
         maxLength={10}
         value={phone}
+        style={styles.input}
       />
 
-      <Text>EMAIL NOTIFICATIONS</Text>
-      <View>
+      <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10 }}>
+        Email Notifications
+      </Text>
+      <View style={styles.checkboxContainer}>
         <Checkbox value={isChecked1} onValueChange={setIsChecked1} />
         <Text>Order status</Text>
       </View>
-      <View>
+      <View style={styles.checkboxContainer}>
         <Checkbox value={isChecked2} onValueChange={setIsChecked2} />
         <Text>Password changes</Text>
       </View>
-      <View>
+      <View style={styles.checkboxContainer}>
         <Checkbox value={isChecked3} onValueChange={setIsChecked3} />
         <Text>Pecial offers</Text>
       </View>
-      <View>
+      <View style={styles.checkboxContainer}>
         <Checkbox value={isChecked4} onValueChange={setIsChecked4} />
         <Text>Newsletters</Text>
       </View>
       <Pressable style={styles.button3} onPress={applogout}>
-        <Text style={{ fontWeight: "bold" }}>Log out</Text>
+        <Text style={{ fontWeight: "bold", fontWeight: "bold" }}>Log out</Text>
       </Pressable>
       {/* <Button title="Log out" onPress={applogout} /> */}
       <View style={styles.btnContainer}>
@@ -245,6 +260,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F4CE14",
     maxHeight: 50,
+    marginBottom: 25,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#495e57",
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  checkboxContainer: {
+    flexDirection: "row",
+    marginBottom: 10,
+    gap: 5,
   },
 });
 

@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
 import { StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -7,10 +7,16 @@ const Header = ({ imageLoadedAS }) => {
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
-    setReRender("re rendering comp.");
-  }, [imageLoadedAS]);
+    if (!imageLoadedAS == null) {
+      setReRender("re rendering comp.");
+    }
+  }, [imageLoadedAS, reRender]);
 
   const imageToJson = JSON.parse(imageLoadedAS);
+
+  console.log(imageLoadedAS);
+  console.log(reRender);
+
   const navigation = useNavigation();
 
   useEffect(() => {});
@@ -18,9 +24,11 @@ const Header = ({ imageLoadedAS }) => {
   return (
     <View>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text>Go Back</Text>
-        </TouchableOpacity>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Text style={{ fontWeight: "bold", color: "#495e57", fontSize: 15 }}>
+            Go Back
+          </Text>
+        </Pressable>
         {/* <Text>LITTLE LEMON</Text> */}
 
         <Image style={styles.logo} source={require("../assets/Logo.png")} />
@@ -66,7 +74,7 @@ const styles = StyleSheet.create({
     paddingLeft: "20",
     paddingRight: "20",
     marginTop: 50,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 
   logo: {
