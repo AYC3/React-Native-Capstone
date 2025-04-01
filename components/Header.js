@@ -41,15 +41,24 @@ const Header = ({ imageLoadedAS }) => {
               />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Profile")}
+              style={{
+                backgroundColor: "white",
+                borderRadius: 50,
+                width: 60,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{
-                  color: "white",
-                  backgroundColor: "black",
-                  fontSize: 40,
+                  // color: "white",
+                  fontSize: 20,
                 }}
               >
-                Empty
+                Profile
               </Text>
             </TouchableOpacity>
           )}

@@ -139,19 +139,26 @@ const Profile = ({ applogout, setIsImageLoaded }) => {
             style={{ width: 100, height: 100, borderRadius: 50 }}
           />
         ) : (
-          <Text
+          <View
             style={{
-              color: "#495e57",
               backgroundColor: "white",
-              fontSize: 50,
               borderRadius: 50,
               width: 100,
               height: 100,
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            {userFirstName[0]}
-            {lastName[0]}
-          </Text>
+            <Text
+              style={{
+                color: "#495e57",
+                fontSize: 50,
+              }}
+            >
+              {userFirstName[0]}
+              {lastName[0]}
+            </Text>
+          </View>
         )}
         <Pressable style={styles.button1} onPress={pickimage}>
           <Text style={{ color: "white", fontWeight: "bold" }}>Change</Text>
