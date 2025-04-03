@@ -13,7 +13,6 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabaseSync("little-lemon");
 
-// Ensure menu table exists
 db.execSync(
   `CREATE TABLE IF NOT EXISTS menu(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -190,7 +189,7 @@ const Home = () => {
       </View>
       <FlatList
         nestedScrollEnabled={true}
-        contentContainerStyle={{ paddingBottom: 500 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
         style={{ padding: 20 }}
         data={filteredMenu.length > 0 ? filteredMenu : []}
         keyExtractor={(item, index) => item.id?.toString() || index.toString()}
